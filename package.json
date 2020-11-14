@@ -1,0 +1,22 @@
+{
+  "name": "demo-jwt",
+  "version": "1.0.0",
+  "description": "Example jwt authentication on express",
+  "main": "server.js",
+  "author": "Danila, Stavrov (dan.stavrov@gmail.com)",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "scripts": {
+    "run": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.6"
+  }
+}

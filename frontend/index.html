@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <title>Example JWT Auth</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+    </head>
+    <body>
+        <section>
+            <h1>Please enter login data</h1>
+            <form id="loginForm">
+                <div class="login-form">
+                    <h4 id="message" style="color: #FF0000"></h4>
+                    <div class="login-item">
+                        <label for="email">email</label>
+                        <input type="email" id="email" name="email"/>
+                    </div>
+                    <div class="login-item">
+                        <label for="password">password</label>
+                        <input id="password" type="password" name="password">
+                    </div>
+                    <input type="submit" style="margin-left: auto" value="Log In">
+                </div>
+            </form>
+            <div id="loggedText" style="display: none">
+                <h2>You successfully logged!<br/>
+                    please go to -> <a href="http://localhost:1337/private-page">/private-page</a>
+                </h2>
+                <button onclick="logOut()">Log out</button>
+            </div>
+        </section>
+        <script>
+            if (Cookies.get("logged") && Cookies.get("auth")){
+                $("#loginForm").css("display", "none");
+                $("#loggedText").css("display", "block");
+            }
+        </script>
+        <script>
+            $("#loginForm").on('submit', function (e) {
+                e.preventDefault();
+                $.post("/auth", {
+                    login: e.target.email.value,
+                    password: e.target.password.value
+                })
+                    .then(response => {
+                        console.log("Login response ->", response);
+                        if (response.logged){
+                            Cookies.set("auth", response.jwt);
+                            localStorage.setItem("user", response.user);
+                            Cookies.set("logged", true);
+
+                            $("#loginForm").css("display", "none");
+                            $("#loggedText").css("display", "block");
+                        }else{
+                            $("#message").text(response.error);
+                        }
+                    })
+                    .catch(reason => {
+                        console.log("Login request error -> ", reason);
+                    });
+            });
+
+            function logOut(){
+                Cookies.remove("auth");
+                localStorage.removeItem("user");
+                Cookies.set("logged", false);
+
+                $("#loginForm").css("display", "block");
+                $("#loggedText").css("display", "none");
+            }
+        </script>
+    </body>
+</html>

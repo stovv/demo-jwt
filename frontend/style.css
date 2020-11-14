@@ -1,0 +1,23 @@
+html{
+    display: block;
+}
+
+section{
+    display: block;
+    width: 100%;
+    padding: 0 10px;
+}
+
+.login-form{
+    display: block;
+    max-width: 250px;
+}
+
+.login-item {
+    display: flex;
+    justify-content: space-between;
+}
+
+.login-item input{
+    max-width: 200px;
+}
